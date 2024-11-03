@@ -1,0 +1,118 @@
+<app-header></app-header>
+<div class="container mx-auto px-4">
+  <div class="flex items-center gap-4">
+    <h1>Suas notificações</h1>
+    <p-button label="Adicionar" (click)="showDialog()"> </p-button>
+    <p-button label="Atualizar" (click)="fundingRateAtual()"> </p-button>
+    <p>{{ proximaAtualizacao }}</p>
+  </div>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    @for(n of notifications; track n.id;){
+    <div
+      class="p-1 border-red-700"
+      [ngClass]="n.bateu ? 'border-2 border-dashed rounded-xl' : null"
+    >
+      <p-card
+        [header]="n.symbol"
+        class="cursor-pointer hover:ease-linear"
+        (click)="showDialogForEdit(n.id)"
+      >
+        <div class="flex flex-col gap-4">
+          <div>
+            <p class="m-0">alerta minimo</p>
+            <p class="m-0 font-bold">{{ n.minFundingRate }}</p>
+          </div>
+          <div>
+            <p class="m-0">alerta maximo</p>
+            <p class="m-0 font-bold">{{ n.maxFundingRate }}</p>
+          </div>
+          <div>
+            <p class="m-0">Interest rate</p>
+            <p class="m-0 font-bold">
+              {{ n.interestRate || "ainda não atualizado" }}
+            </p>
+          </div>
+          <div>
+            <p class="m-0">ultima atualização</p>
+            <p class="m-0 font-bold">
+              {{
+                (n.fundingRateLastUpdate | date : "short") ??
+                  "ainda não atualizado"
+              }}
+            </p>
+          </div>
+          <p-chip
+            [label]="n.fundingRate?.toString() || 'não disponivel'"
+            class="self-end font-bold"
+            [icon]="
+              n.fundingRateStatus === 'positive'
+                ? 'pi pi-angle-double-up'
+                : n.fundingRateStatus === 'negative'
+                ? 'pi pi-angle-double-down'
+                : 'pi pi-equals'
+            "
+          />
+        </div>
+      </p-card>
+    </div>
+
+    }
+  </div>
+</div>
+
+<p-dialog
+  [header]="isEditing ? 'Editando notificação' : 'Adicionando notificação'"
+  [modal]="true"
+  [(visible)]="cardDialog"
+  [style]="{ width: '25rem' }"
+>
+  <form
+    [formGroup]="formGroup"
+    class="flex flex-col gap-11 pt-5"
+    (ngSubmit)="onSubmit()"
+  >
+    <p-floatLabel>
+      <p-autoComplete
+        formControlName="symbol"
+        [suggestions]="suggestions"
+        (completeMethod)="search($event)"
+        id="symbol"
+      />
+      <label for="symbol">Simbolo</label>
+    </p-floatLabel>
+
+    <p-floatLabel>
+      <p-inputNumber
+        id="minFundingRate"
+        formControlName="minFundingRate"
+        class="w-full"
+        mode="decimal"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="5"
+      />
+      <label for="minFundingRate">Funding rate minimo</label>
+    </p-floatLabel>
+    <p-floatLabel>
+      <p-inputNumber
+        id="maxFundingRate"
+        formControlName="maxFundingRate"
+        class="w-full"
+        mode="decimal"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="5"
+      />
+      <label for="maxFundingRate">Funding rate maximo</label>
+    </p-floatLabel>
+    <div class="flex gap-4 justify-center">
+      @if(isEditing){
+      <p-button
+        severity="danger"
+        label="Excluir"
+        type="button"
+        (onClick)="excluirNotificacao()"
+      />
+      }
+      <p-button severity="success" label="Salvar" type="submit" />
+    </div>
+  </form>
+</p-dialog>

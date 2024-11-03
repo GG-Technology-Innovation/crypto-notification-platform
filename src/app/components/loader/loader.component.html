@@ -1,0 +1,10 @@
+@if ($isLoading | async) {
+<div
+  class="fixed block w-full h-full top-0 left-0 bg-slate-200 z-50 opacity-50"
+>
+  <p-progressSpinner
+    ariaLabel="loading"
+    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+  />
+</div>
+}

@@ -1,0 +1,32 @@
+<div class="h-screen w-full relative">
+  <div
+    class="absolute top-1/2 left-1/2 bg-white border border-zinc-500 rounded-md p-10 shadow-2xl -translate-x-1/2 -translate-y-1/2"
+  >
+    <h1 class="text-center mb-10">Login</h1>
+    <form
+      [formGroup]="formGroup"
+      class="flex flex-col gap-11"
+      (ngSubmit)="onSubmit()"
+    >
+      <p-floatLabel>
+        <input pInputText id="email" formControlName="email" class="w-full" />
+        <label for="email">Email</label>
+      </p-floatLabel>
+      <p-floatLabel>
+        <p-password
+          formControlName="password"
+          [feedback]="false"
+          [toggleMask]="true"
+          id="password"
+        />
+        <label for="password">Password</label>
+      </p-floatLabel>
+      <p-button
+        label="Submit"
+        class="self-center"
+        type="submit"
+        [disabled]="formGroup.invalid"
+      />
+    </form>
+  </div>
+</div>

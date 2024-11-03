@@ -1,0 +1,28 @@
+@import "primeng/resources/themes/aura-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Order */
+@layer reset, primeng;
+
+/* Reset CSS */
+@layer reset {
+  .p-inputnumber {
+    width: 100%;
+  }
+
+  .p-autocomplete {
+    width: 100%;
+    &-input {
+      width: 100%;
+    }
+  }
+}
+
+body {
+  margin: 0;
+}
